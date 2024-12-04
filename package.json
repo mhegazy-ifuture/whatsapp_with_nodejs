@@ -1,0 +1,27 @@
+{
+  "name": "whatsapp_with_nodejs",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "dependencies": {
+    "asynckit": "^0.4.0",
+    "axios": "^1.7.8",
+    "combined-stream": "^1.0.8",
+    "delayed-stream": "^1.0.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "follow-redirects": "^1.15.9",
+    "form-data": "^4.0.1",
+    "mime-db": "^1.52.0",
+    "mime-types": "^2.1.35",
+    "proxy-from-env": "^1.1.0"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
