@@ -1,7 +1,9 @@
 import express from "express";
+import { configDotenv } from "dotenv";
+configDotenv();
 import routes from "./src/routes/routes.js";
 const app = express();
-const PORT = process.env.PORT || 6680;
+const PORT = process.env.PORT || 5000;
 app.use(express.json()); 
 app.get("/", (req, res) => res.send("Hello World!")); 
 app.use("/whatsapp", routes);

@@ -1,3 +1,8 @@
+import fs from "fs";
+
+
+const myConsole = fs.createWriteStream("./logs.log", { flags: "a" });
+
 export const verifyToken = (req, res, next) => {
 
   try {
@@ -18,5 +23,15 @@ export const verifyToken = (req, res, next) => {
   res.send("hi  verifyToken");
 };
 export const receivedMessage = (req, res, next) => {
-  console.log(req)
+  try {
+   
+    const {entry} = req.body;
+    const message = entry[0].changes[0].value.messages[0];
+    const sender = message.from;
+    const messageText = message.text.body;
+    myConsole.log(messageText);
+  
+ } catch (error) {
+  res.status(500).send("EVENT_RESPONSE_ERROR");
+ }
 };
