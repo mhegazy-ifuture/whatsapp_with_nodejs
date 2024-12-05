@@ -1,6 +1,7 @@
 export const verifyToken = (req, res, next) => {
 
-try {
+  try {
+  console.log(req.query)
   const accessToken = 'RTQWWTVHBDS32145698741258963'
   const token = req.query['hub.verify_token'];
   const challenage = req.query["hub.challenge"];
