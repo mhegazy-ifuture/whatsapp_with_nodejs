@@ -18,5 +18,5 @@ export const verifyToken = (req, res, next) => {
   res.send("hi  verifyToken");
 };
 export const receivedMessage = (req, res, next) => {
-  res.send("hi receivedMessage");
+  console.log(req)
 };
