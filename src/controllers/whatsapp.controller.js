@@ -1,7 +1,14 @@
 export const verifyToken = (req, res, next) => {
 
 try {
-    
+  const accessToken = 'RTQWWTVHBDS32145698741258963'
+  const token = req.query['hub.verify_token'];
+  const challenage = req.body["hub.challenge"];
+  if(challenage && token && token === accessToken){
+    res.send(challenage);
+  }else{
+    res.status(403).send("Forbidden");
+  }
 } catch (error) {
  return res.status(500).send(error);   
 }
