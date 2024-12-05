@@ -1,7 +1,7 @@
 import fs from "fs";
 
 import axios from "axios";
-const myConsole = new console.Console(fs.createWriteStream("./log.txt"));
+const receivedMessagesLogs = new console.Console(fs.createWriteStream("./received_messages.log"));
 
 export const verifyToken = (req, res, next) => {
 
@@ -23,7 +23,7 @@ export const verifyToken = (req, res, next) => {
   res.send("hi  verifyToken");
 };
 export const receivedMessage = async(req, res, next) => {
- console.log("Incoming webhook message:", JSON.stringify(req.body, null, 2));
+ receivedMessagesLogs.log("Incoming webhook message:", JSON.stringify(req.body, null, 2));
   
 
   // check if the webhook request contains a message
