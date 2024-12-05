@@ -5,4 +5,4 @@ router
   .get("/", whatsappController.verifyToken)
   .post("/", whatsappController.receivedMessage);
 
-  export default router
+  export default router     
