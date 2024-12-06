@@ -23,7 +23,7 @@ export const verifyToken = (req, res, next) => {
   res.send("hi  verifyToken");
 };
 export const receivedMessage = async(req, res, next) => {
- receivedMessagesLogs.log("Incoming webhook message:", JSON.stringify(req.body, null, 2));
+console.log("Incoming webhook message:", JSON.stringify(req.body, null, 2));
   
 
   // check if the webhook request contains a message
@@ -33,13 +33,13 @@ export const receivedMessage = async(req, res, next) => {
   // check if the incoming message contains text
   if (message?.type === "text") {
     // extract the business number to send the reply from it
-    const business_phone_number_id =
+    const businessPhoneNumberId =
       req.body.entry?.[0].changes?.[0].value?.metadata?.phone_number_id;
 
     // send a reply message as per the docs here https://developers.facebook.com/docs/whatsapp/cloud-api/reference/messages
     await axios({
       method: "POST",
-      url: `https://graph.facebook.com/v18.0/${business_phone_number_id}/messages`,
+      url: `https://graph.facebook.com/v18.0/${businessPhoneNumberId}/messages`,
       headers: {
         Authorization: `Bearer ${process.env.GRAPH_API_TOKEN}`,
       },
@@ -56,7 +56,7 @@ export const receivedMessage = async(req, res, next) => {
     // mark incoming message as read
     await axios({
       method: "POST",
-      url: `https://graph.facebook.com/v18.0/${business_phone_number_id}/messages`,
+      url: `https://graph.facebook.com/v18.0/${businessPhoneNumberId}/messages`,
       headers: {
         Authorization: `Bearer ${process.env.GRAPH_API_TOKEN}`,
       },
