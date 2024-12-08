@@ -1,7 +1,8 @@
 import fs from "fs";
 
 import axios from "axios";
-import sendWhatsAppMessage from "../services/whatsappService";
+import sendWhatsAppMessage from "../services/whatsappService.js";
+import { sampleMenuFlow } from "../shared/sampleModels.js";
 const receivedMessagesLogs = new console.Console(
   fs.createWriteStream("./received_messages.log")
 );

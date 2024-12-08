@@ -59,7 +59,7 @@ function sampleDocument({ documentUrl, caption, filename, number }) {
   });
 }
 
-function sampleMenuFlow({ number }) {
+export function sampleMenuFlow({ number }) {
   return JSON.stringify({
     messaging_product: "whatsapp",
     to: number,
