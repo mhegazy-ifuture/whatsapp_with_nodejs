@@ -1,6 +1,7 @@
 import fs from "fs";
 
 import axios from "axios";
+import sendWhatsAppMessage from "../services/whatsappService";
 const receivedMessagesLogs = new console.Console(
   fs.createWriteStream("./received_messages.log")
 );
@@ -8,7 +9,8 @@ const receivedMessagesLogs = new console.Console(
 const verifyToken = (req, res) => {
   try {
     const { query } = req;
-    const { "hub.verify_token": verifyToken, "hub.challenge": challenge } = query;
+    const { "hub.verify_token": verifyToken, "hub.challenge": challenge } =
+      query;
     const accessToken = "RTQWWTVHBDS32145698741258963";
 
     if (challenge && verifyToken && verifyToken === accessToken) {
@@ -27,79 +29,13 @@ const receivedMessage = async (req, res) => {
     const [{ changes }] = body.entry;
     const [{ value }] = changes;
     const { from, messages } = value;
-    const [{ type, text: messageText }] = messages;
+    const [{ type, text: messageText, id: messageId }] = messages;
 
-    let text;
-    switch (type) {
-      case "text":
-        text = messageText;
-        break;
-      case "interactive":
-        const { interactive } = messages[0];
-        console.log({interactive});
-        
-        const { type: interactiveType, button_reply, list_reply } = interactive;
-        switch (interactiveType) {
-          case "button_reply":
-            text = button_reply.title;
-            break;
-          case "list_reply":
-            text = list_reply.title;
-            break;
-          default:
-            console.log("no message");
-        }
-        break;
-      default:
-        console.log("no message");
-    }
+  
 
-    console.log(type ,text);
 
-  //   await axios.post(
-  //     "https://graph.facebook.com/491560174040223/messages",
-  //     {
-  //       messaging_product: "whatsapp",
-  //       to: '201067574899',
-  //       type: "interactive",
-  //       interactive: {
-  //         type: "list_replay",
-  //         header: {
-  //           type: "text",
-  //           text: "<MESSAGE_HEADER_TEXT>",
-  //         },
-  //         body: {
-  //           text: "<MESSAGE_BODY_TEXT>",
-  //         },
-  //         footer: {
-  //           text: "<MESSAGE_FOOTER_TEXT>",
-  //         },
-  //         action: {
-  //           sections: [
-  //             {
-  //               title: "<SECTION_TITLE_TEXT>",
-  //               rows: [
-  //                 {
-  //                   id: "<ROW_ID>",
-  //                   title: "<ROW_TITLE_TEXT>",
-  //                   description: "<ROW_DESCRIPTION_TEXT>",
-  //                 },
-  //                 /* Additional rows would go here*/
-  //               ],
-  //             },
-  //             /* Additional sections would go here */
-  //           ],
-  //           button: "<BUTTON_TEXT>",
-  //         },
-  //       },
-  //     },
-  //     {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${process.env.GRAPH_API_TOKEN}`,
-  //       },
-  //     }
-  //   );
+    // await sendWhatsAppMessage(`hi ${from} i'm pleased to message you`, from);
+    await sendWhatsAppMessage(sampleMenuFlow({ number: from }));
 
     res.status(200).send("hi  receivedMessage");
   } catch (error) {
@@ -109,4 +45,3 @@ const receivedMessage = async (req, res) => {
 };
 
 export { verifyToken, receivedMessage };
-
