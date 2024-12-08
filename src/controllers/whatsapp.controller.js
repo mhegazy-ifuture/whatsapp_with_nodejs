@@ -22,51 +22,15 @@ export const verifyToken = (req, res, next) => {
 
   res.send("hi  verifyToken");
 };
-export const receivedMessage = async(req, res, next) => {
-console.log("Incoming webhook message:", JSON.stringify(req.body, null, 2));
+export const receivedMessage = (req, res, next) => {
+  console.log(req.body);
   
-
-  // check if the webhook request contains a message
-  // details on WhatsApp text message payload: https://developers.facebook.com/docs/whatsapp/cloud-api/webhooks/payload-examples#text-messages
-  const message = req.body.entry?.[0]?.changes[0]?.value?.messages?.[0];
-
-  // check if the incoming message contains text
-  if (message?.type === "text") {
-    // extract the business number to send the reply from it
-    const businessPhoneNumberId =
-      req.body.entry?.[0].changes?.[0].value?.metadata?.phone_number_id;
-
-    // send a reply message as per the docs here https://developers.facebook.com/docs/whatsapp/cloud-api/reference/messages
-    await axios({
-      method: "POST",
-      url: `https://graph.facebook.com/v18.0/${businessPhoneNumberId}/messages`,
-      headers: {
-        Authorization: `Bearer ${process.env.GRAPH_API_TOKEN}`,
-      },
-      data: {
-        messaging_product: "whatsapp",
-        to: message.from,
-        text: { body: "Echo: " + message.text.body },
-        context: {
-          message_id: message.id, // shows the message as a reply to the original user message
-        },
-      },
-    });
-
-    // mark incoming message as read
-    await axios({
-      method: "POST",
-      url: `https://graph.facebook.com/v18.0/${businessPhoneNumberId}/messages`,
-      headers: {
-        Authorization: `Bearer ${process.env.GRAPH_API_TOKEN}`,
-      },
-      data: {
-        messaging_product: "whatsapp",
-        status: "read",
-        message_id: message.id,
-      },
-    });
-  }
-
-  res.sendStatus(200);
+  const entry = req.body.entry[0];
+  const changes = entry?.changes[0];
+  const value = changes?.value;
+  const messageObject = value?.messages[0];
+  const messageText = messageObject?.text?.body;
+  console.log({messageText ,messageObject ,value ,changes,entry ,});
+  res.send("hi  receivedMessage");
+  
 };
