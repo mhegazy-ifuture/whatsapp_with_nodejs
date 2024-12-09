@@ -14,22 +14,20 @@ export const verifyToken = asyncHandler(async (req, res) => {
   }
 });
 
-
-
-
-
-
-
 // ============== Receieve Message ==============
 export const receivedMessage = asyncHandler(async (req, res, next) => {
   const { body } = req;
   const [{ changes }] = body.entry;
   const [{ value }] = changes;
   const { messages } = value;
-  const [{ from }] = messages;
+  const [
+    {
+      from,
+      body: { text },
+    },
+  ] = messages;
 
-  console.log({ messages });
-
+  console.log(text);
   await sendWhatsAppMessage(sampleMenu({ number: from })).catch((error) => {
     next(new Error(error.response.data, { cause: 500 }));
   });

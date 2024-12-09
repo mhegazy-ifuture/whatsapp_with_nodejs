@@ -9,7 +9,7 @@ import axios from "axios";
     "Content-Type": "application/json",
     Authorization: `Bearer ${process.env.GRAPH_API_TOKEN}`,
    };
-   console.log({data});
+
    
 
   return await axios.post(url, data, { headers });  
