@@ -1,48 +1,32 @@
-import fs from "fs";
-
-import axios from "axios";
 import sendWhatsAppMessage from "../services/whatsappService.js";
 import { sampleMenuFlow } from "../shared/sampleModels.js";
-const receivedMessagesLogs = new console.Console(
-  fs.createWriteStream("./received_messages.log")
-);
+import { asyncHandler } from "../utils/errorHandling.js";
 
-const verifyToken = (req, res) => {
-  try {
-    const { query } = req;
-    const { "hub.verify_token": verifyToken, "hub.challenge": challenge } =
-      query;
-    const accessToken = "RTQWWTVHBDS32145698741258963";
+export const verifyToken = asyncHandler(async (req, res) => {
+  const { query } = req;
+  const { "hub.verify_token": verifyToken, "hub.challenge": challenge } = query;
+  const accessToken = "RTQWWTVHBDS32145698741258963";
 
-    if (challenge && verifyToken && verifyToken === accessToken) {
-      res.send(challenge);
-    } else {
-      res.status(403).send("Forbidden");
-    }
-  } catch (error) {
-    res.status(500).send(error);
+  if (challenge && verifyToken && verifyToken === accessToken) {
+    res.send(challenge);
+  } else {
+    next(new Error("Failed to verify token", { cause: 500 }));
   }
-};
+});
 
-const receivedMessage = async (req, res) => {
-  try {
-    const { body } = req;
-    const [{ changes }] = body.entry;
-    const [{ value }] = changes;
-    const { from, messages } = value;
-    const [{ type, text: messageText, id: messageId }] = messages;
+// ============== Receieve Message ==============
+export const receivedMessage = asyncHandler(async (req, res, next) => {
+  const { body } = req;
+  const [{ changes }] = body.entry;
+  const [{ value }] = changes;
+  const { messages } = value;
+  const [{ from }] = messages;
 
-  
+  console.log({ messages });
 
+  await sendWhatsAppMessage(sampleMenuFlow({ number: from })).catch((error) => {
+    next(new Error(error.response.data, { cause: 500 }));
+  });
 
-    // await sendWhatsAppMessage(`hi ${from} i'm pleased to message you`, from);
-    await sendWhatsAppMessage(sampleMenuFlow({ number: from }));
-
-    res.status(200).send("hi  receivedMessage");
-  } catch (error) {
-    receivedMessagesLogs.error(error);
-    res.status(400).send(error);
-  }
-};
-
-export { verifyToken, receivedMessage };
+  res.status(200).json({ messages: "ok" });
+});
