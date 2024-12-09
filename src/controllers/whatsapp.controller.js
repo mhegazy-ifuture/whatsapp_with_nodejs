@@ -24,7 +24,7 @@ export const receivedMessage = asyncHandler(async (req, res, next) => {
 
   console.log({ messages });
 
-  await sendWhatsAppMessage(sampleMenuFlow({ number: from })).catch((error) => {
+  await sendWhatsAppMessage(sampleMenu({ number: from })).catch((error) => {
     next(new Error(error.response.data, { cause: 500 }));
   });
 

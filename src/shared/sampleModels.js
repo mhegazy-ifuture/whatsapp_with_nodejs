@@ -46,7 +46,7 @@ export function sampleDocument({ documentUrl, caption, filename, number }) {
   });
 }
 
-export function sampleMenuFlow({ number }) {
+export function sampleMenu({ number }) {
   return JSON.stringify({
     messaging_product: "whatsapp",
     to: number,
