@@ -2,12 +2,10 @@ const getListItemName = (item) => {
   if (foodsList.includes(item)) return "foodsList";
   if (dessertsList.includes(item)) return "dessertsList";
   if (drinksList.includes(item)) return "drinksList";
-  if (menuItemsList.includes(item)) return "menuItems";
-  return "unknown";
 };
 
 export const findItemById = (searchKey) => {
-  const allFoodItems = [...foodsList, ...dessertsList, ...drinksList, ,];
+  const allFoodItems = [...foodsList, ...dessertsList, ...drinksList];
   const item = allFoodItems.find((item) => item.id === searchKey);
   if (item) {
     const listName = getListItemName(item);
