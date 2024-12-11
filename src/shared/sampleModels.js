@@ -1,3 +1,5 @@
+import { desserts, drinks, foods, MenuItems, menuItemsList } from "../utils/MenuItems";
+
 export function sampletext({ textResponse, number }) {
   return JSON.stringify({
     messaging_product: "whatsapp",
@@ -67,24 +69,15 @@ export function sampleMenu({ number }) {
         buttons: [
           {
             type: "reply",
-            reply: {
-              id: "food_options",
-              title: "Food Options",
-            },
+            reply: menuItemsList.foods,
           },
           {
             type: "reply",
-            reply: {
-              id: "dessert_options",
-              title: "Dessert Options",
-            },
+            reply: menuItemsList.desserts,
           },
           {
             type: "reply",
-            reply: {
-              id: "drink_options",
-              title: "Drink Options",
-            },
+            reply: menuItemsList.drinks,
           },
         ],
       },
@@ -92,7 +85,25 @@ export function sampleMenu({ number }) {
   });
 }
 
-export function sampleMultiSelectMenu({ number }) {
+export function sampleMultiSelectMenu({ number, optionId }) {
+  const sections = [];
+  if (optionId === "food_options") {
+    sections.push({
+      title: "Foods",
+      rows: [...foods],
+    });
+  } else if (optionId === "dessert_options") {
+    sections.push({
+      title: "Desserts",
+      rows: [...desserts],
+    });
+  } else if (optionId === "drink_options") {
+    sections.push({
+      title: "Drinks",
+      rows: [...drinks],
+    });
+  }
+
   return JSON.stringify({
     messaging_product: "whatsapp",
     to: number,
@@ -101,44 +112,57 @@ export function sampleMultiSelectMenu({ number }) {
       type: "list",
       header: {
         type: "text",
-        text: "Choose your options",
+        text: `Select your favorite ${optionId}`,
       },
       body: {
-        text: "Select multiple items from the list below:",
-      },
-      footer: {
-        text: "You can select more than one option.",
+        text: `Select your favorite ${optionId}`,
       },
       action: {
-        button: "Select Options",
-        sections: [
+        button: "Select",
+        sections,
+      },
+    },
+  });
+}
+export function sampleConfirmMenu({ number }) {
+  return JSON.stringify({
+    messaging_product: "whatsapp",
+    to: number,
+    type: "interactive",
+    interactive: {
+      type: "button",
+      header: {
+        type: "text",
+        text: "Confirm or cancel your order",
+      },
+      body: {
+        text: "Confirm or cancel your order",
+      },
+      action: {
+        buttons: [
           {
-            title: "Food",
-            rows: [
-              { id: "food1", title: "Pizza" },
-              { id: "food2", title: "Burger" },
-              { id: "food3", title: "Pasta" },
-            ],
+            type: "reply",
+            reply: {
+              id: "ask_for_more",
+              title: "Ask for more",
+            },
           },
           {
-            title: "Desserts",
-            rows: [
-              { id: "dessert1", title: "Ice Cream" },
-              { id: "dessert2", title: "Cake" },
-              { id: "dessert3", title: "Cookies" },
-            ],
+            type: "reply",
+            reply: {
+              id: "confirm",
+              title: "Confirm",
+            },
           },
           {
-            title: "Drinks",
-            rows: [
-              { id: "drink1", title: "Soda" },
-              { id: "drink2", title: "Juice" },
-              { id: "drink3", title: "Water" },
-            ],
+            type: "reply",
+            reply: {
+              id: "cancel",
+              title: "Cancel",
+            },
           },
         ],
       },
     },
   });
 }
-
