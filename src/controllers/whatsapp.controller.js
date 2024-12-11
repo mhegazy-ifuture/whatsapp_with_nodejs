@@ -20,12 +20,13 @@ export const receivedMessage = asyncHandler(async (req, res, next) => {
   const { changes } = body.entry[0];
   const { value } = changes[0];
   const { messages } = value;
+  console.log({ messages })
   const { from, id, text: { body: messageBady } } = messages[0];
   console.log(messageBady)
 
   try {    
     await markMessageAsRead(id);
-    console.log(messages);
+    
     await sendWhatsAppMessage(sampleMenu({ number: from }));
     res.status(200).json({ message: "ok" });
   } catch (error) {
