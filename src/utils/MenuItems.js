@@ -1,30 +1,27 @@
-
-
-
- const getListItemName = (item) => {
-  if (foodsList.includes(item)) return 'foodsList';
-  if (dessertsList.includes(item)) return 'dessertsList';
-  if (drinksList.includes(item)) return 'drinksList';
-  if (menuItemsList.includes(item)) return 'menuItems';
-  return 'unknown';
+const getListItemName = (item) => {
+  if (foodsList.includes(item)) return "foodsList";
+  if (dessertsList.includes(item)) return "dessertsList";
+  if (drinksList.includes(item)) return "drinksList";
+  if (menuItemsList.includes(item)) return "menuItems";
+  return "unknown";
 };
 
-
-
-
 export const findItemById = (searchKey) => {
-  const allItems = [
-    ...foodsList,
-    ...dessertsList,
-    ...drinksList,
-    ...menuItemsList,
-  ];
-  const item = allItems.find((item) => item.id === searchKey);
+  const allFoodItems = [...foodsList, ...dessertsList, ...drinksList, ,];
+  const item = allFoodItems.find((item) => item.id === searchKey);
   if (item) {
     const listName = getListItemName(item);
     return { item, listName };
   } else {
-    return null;
+    const item = Object.values(menuItemsList).find(
+      (item) => item.id === searchKey
+    );
+
+    if (item) {
+      return { item, listName: "menuItemsList" };
+    } else {
+      return { item: null, listName: "unknown" };
+    }
   }
 };
 
@@ -57,7 +54,7 @@ export const foodsList = [
   },
 ];
 
- export const dessertsList = [
+export const dessertsList = [
   {
     id: "chocolate",
     title: "Chocolate",
@@ -75,7 +72,7 @@ export const foodsList = [
   },
 ];
 
- export const drinksList = [
+export const drinksList = [
   {
     id: "coke",
     title: "Coke",
@@ -94,19 +91,16 @@ export const foodsList = [
 ];
 
 export const menuItemsList = {
- foods: {
+  foods: {
     id: "food_options",
     title: "Food Options",
   },
-desserts :  {
+  desserts: {
     id: "dessert_options",
     title: "Dessert Options",
   },
- drinks: {
+  drinks: {
     id: "drink_options",
     title: "Drink Options",
   },
 };
-
-
-

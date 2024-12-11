@@ -1,7 +1,8 @@
+import e from "express";
 import { sendWhatsAppMessage, markMessageAsRead } from "../services/whatsappService.js";
 import { sampleMenu, sampleMultiSelectMenu } from "../shared/sampleModels.js";
 import { asyncHandler } from "../utils/errorHandling.js";
-import { findItemById, getListItemName } from "../utils/MenuItems.js";
+import { findItemById } from "../utils/MenuItems.js";
 
 export const verifyToken = asyncHandler(async (req, res, next) => {
   const { query } = req;
@@ -37,14 +38,17 @@ export const receivedMessage = asyncHandler(async (req, res, next) => {
   const { value } = changes[0];
   const { messages } = value;
   const { from, id, type } = messages[0];
-
+console.log({type})
   await markMessageAsRead(id);
 
   let session = userSessions[from] || { selections: [], status: null };
 
   switch (type) {
     case "text":
-      if (messages[0].text.body.trim().toLowerCase() === "confirm" && session.status === SESSION_ACTIVE) {
+      if (
+        messages[0].text.body.trim().toLowerCase() === "confirm" &&
+        session.status === SESSION_ACTIVE
+      ) {
         await confirmSelection(from, session.selections);
       } else {
         await sendWhatsAppMessage(sampleMenu({ number: from }));
@@ -53,16 +57,23 @@ export const receivedMessage = asyncHandler(async (req, res, next) => {
 
     case "interactive":
       const optionId = messages[0].interactive.button_reply.id;
+      console.log({ optionId });
       const { item, listName } = findItemById(optionId);
-
+      console.log({ item, listName });
       if (listName === "menuItems") {
         await sendWhatsAppMessage(
           sampleMultiSelectMenu({ number: from, optionId })
-        );
+        ).catch((error) => {
+          console.log(error.response.data);
+        });
       } else {
         session.selections.push(item);
         session.status = SESSION_ACTIVE;
         userSessions[from] = session;
+
+        await sendWhatsAppMessage(
+          sampleConfirmMenu({ number: from, selections: session.selections })
+        );
       }
   }
 

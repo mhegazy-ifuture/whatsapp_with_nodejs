@@ -1,4 +1,11 @@
-import { desserts, drinks, foods, MenuItems, menuItemsList } from "../utils/MenuItems";
+import {
+  dessertsList,
+  drinksList,
+  
+  foodsList,
+  
+  menuItemsList,
+} from "../utils/MenuItems.js";
 
 export function sampletext({ textResponse, number }) {
   return JSON.stringify({
@@ -90,20 +97,20 @@ export function sampleMultiSelectMenu({ number, optionId }) {
   if (optionId === "food_options") {
     sections.push({
       title: "Foods",
-      rows: [...foods],
+      rows: [...foodsList],
     });
   } else if (optionId === "dessert_options") {
     sections.push({
       title: "Desserts",
-      rows: [...desserts],
+      rows: [...dessertsList],
     });
   } else if (optionId === "drink_options") {
     sections.push({
       title: "Drinks",
-      rows: [...drinks],
+      rows: [...drinksList],
     });
   }
-
+console.log({sections})
   return JSON.stringify({
     messaging_product: "whatsapp",
     to: number,
@@ -124,7 +131,8 @@ export function sampleMultiSelectMenu({ number, optionId }) {
     },
   });
 }
-export function sampleConfirmMenu({ number }) {
+export function sampleConfirmMenu({ number, selections }) {
+  const totalPrice = selections.reduce((acc, item) => acc + getPrice(item), 0);
   return JSON.stringify({
     messaging_product: "whatsapp",
     to: number,
@@ -133,10 +141,10 @@ export function sampleConfirmMenu({ number }) {
       type: "button",
       header: {
         type: "text",
-        text: "Confirm or cancel your order",
+        text: `Confirm your order: ${selections.map((item) => item.title).join(", ")} ($${totalPrice.toFixed(2)})`,
       },
       body: {
-        text: "Confirm or cancel your order",
+        text: `Confirm your order: ${selections.map((item) => item.title).join(", ")} ($${totalPrice.toFixed(2)})`,
       },
       action: {
         buttons: [
@@ -166,3 +174,4 @@ export function sampleConfirmMenu({ number }) {
     },
   });
 }
+
