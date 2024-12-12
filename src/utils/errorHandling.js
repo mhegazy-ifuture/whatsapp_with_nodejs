@@ -1,6 +1,9 @@
 
 export const asyncHandler = (fn) => (req, res, next) =>
-  fn(req, res).catch((error) => next(new Error(error, { cause: 500 })));
+  fn(req, res).catch((error) => {
+    console.log({error: JSON.stringify(error),errorMsg :JSON.parse(error?.response?.data||error)})
+    return next(error);
+  });
 
 
 export const errorHandling = (error, req, res, next) => {

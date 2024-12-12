@@ -25,5 +25,5 @@ export async function markMessageAsRead(messageId) {
       message_id: messageId,
     },
     { headers }
-  );
+  ).catch((error) => console.log('sendWhatsAppMessageError' ,{error}));
 }

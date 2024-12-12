@@ -1,9 +1,8 @@
 import {
   dessertsList,
   drinksList,
-  
   foodsList,
-  
+  getPrice,
   menuItemsList,
 } from "../utils/MenuItems.js";
 
@@ -110,7 +109,7 @@ export function sampleMultiSelectMenu({ number, optionId }) {
       rows: [...drinksList],
     });
   }
-console.log({sections})
+  console.log({ sections });
   return JSON.stringify({
     messaging_product: "whatsapp",
     to: number,
@@ -141,10 +140,14 @@ export function sampleConfirmMenu({ number, selections }) {
       type: "button",
       header: {
         type: "text",
-        text: `Confirm your order: ${selections.map((item) => item.title).join(", ")} ($${totalPrice.toFixed(2)})`,
+        text: `Confirm your order: ${selections
+          .map((item) => item.title)
+          .join(", ")} ($${totalPrice.toFixed(2)})`,
       },
       body: {
-        text: `Confirm your order: ${selections.map((item) => item.title).join(", ")} ($${totalPrice.toFixed(2)})`,
+        text: `Confirm your order: ${selections
+          .map((item) => item.title)
+          .join(", ")} ($${totalPrice.toFixed(2)})`,
       },
       action: {
         buttons: [
@@ -175,3 +178,15 @@ export function sampleConfirmMenu({ number, selections }) {
   });
 }
 
+export function samplePaymentGateWay({ number, totalPrice }) {
+  const url = `https://developer.paypal.com/home/`;
+  return JSON.stringify({
+    messaging_product: "whatsapp",
+    to: number,
+    type: "text",
+    text: {
+      preview_url: true,
+      body: `click here to pay ${totalPrice.toFixed(2)} , ${url}`,
+    },
+  });
+}
