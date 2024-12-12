@@ -16,7 +16,7 @@ export const findItemById = (searchKey) => {
     );
 
     if (item) {
-      return { item, listName: "menuItemsList" };
+      return { item, listName: "menuItems" };
     } else {
       return { item: null, listName: "unknown" };
     }

@@ -1,5 +1,8 @@
 import e from "express";
-import { sendWhatsAppMessage, markMessageAsRead } from "../services/whatsappService.js";
+import {
+  sendWhatsAppMessage,
+  markMessageAsRead,
+} from "../services/whatsappService.js";
 import { sampleMenu, sampleMultiSelectMenu } from "../shared/sampleModels.js";
 import { asyncHandler } from "../utils/errorHandling.js";
 import { findItemById } from "../utils/MenuItems.js";
@@ -29,7 +32,7 @@ const confirmSelection = async (from, selections) => {
     })
   );
   delete userSessions[from]; // Clear the session after completion
-}; 
+};
 
 // ============== Receive Message ==============
 export const receivedMessage = asyncHandler(async (req, res, next) => {
@@ -38,7 +41,7 @@ export const receivedMessage = asyncHandler(async (req, res, next) => {
   const { value } = changes[0];
   const { messages } = value;
   const { from, id, type } = messages[0];
-console.log({type})
+  console.log({ type });
   await markMessageAsRead(id);
 
   let session = userSessions[from] || { selections: [], status: null };
@@ -79,4 +82,3 @@ console.log({type})
 
   res.status(200).json({ message: "ok" });
 });
-
