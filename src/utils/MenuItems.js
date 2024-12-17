@@ -33,72 +33,68 @@ export const getPrice = (item) => {
     return null; // no price found
   }
 };
-
-export const foodsList = [
-  {
-    id: "chicken",
-    title: "Chicken",
-    description: "price $10",
-  },
-  {
-    id: "beef",
-    title: "Beef",
-    description: "price $12",
-  },
-  {
-    id: "pork",
-    title: "Pork",
-    description: "price $14",
-  },
-];
-
 export const dessertsList = [
   {
     id: "chocolate",
-    title: "Chocolate",
-    description: "price $8",
+    title: "شوكولاتة",
+    description: "السعر 8$",
   },
   {
     id: "strawberry",
-    title: "Strawberry",
-    description: "price $9",
+    title: "فراولة",
+    description: "السعر 9$",
   },
   {
     id: "vanilla",
-    title: "Vanilla",
-    description: "price $6",
+    title: "فانيليا",
+    description: "السعر 6$",
   },
 ];
-
+export const foodsList = [
+  {
+    id: "chicken",
+    title: "دجاج",
+    description: "السعر 10$",
+  },
+  {
+    id: "beef",
+    title: "لحم بقر",
+    description: "السعر 12$",
+  },
+  {
+    id: "fish",
+    title: "لحم سمك",
+    description: "السعر 14$",
+  },
+];
 export const drinksList = [
   {
     id: "coke",
-    title: "Coke",
-    description: "price $5",
+    title: "كولا",
+    description: "السعر 5$",
   },
   {
     id: "pepsi",
-    title: "Pepsi",
-    description: "price $5",
+    title: "بيبسي",
+    description: "السعر 5$",
   },
   {
     id: "orange_juice",
-    title: "Orange Juice",
-    description: "price $7",
+    title: "عصير برتقال",
+    description: "السعر 7$",
   },
 ];
-
 export const menuItemsList = {
   foods: {
     id: "food_options",
-    title: "Food Options",
+    title: "خيارات الطعام",
   },
   desserts: {
     id: "dessert_options",
-    title: "Dessert Options",
+    title: "خيارات الحلويات",
   },
   drinks: {
     id: "drink_options",
-    title: "Drink Options",
+    title: "خيارات المشروبات",
   },
 };

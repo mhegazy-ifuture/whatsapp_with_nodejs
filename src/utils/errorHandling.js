@@ -3,7 +3,7 @@ export const asyncHandler = (API) => {
   return (req, res, next) => {
     API(req, res, next).catch(async (err) => {
      
-      console.log({ err });
+      console.log({ err :JSON.stringify(err) });
       return next(new Error(err, { cause: 500 }));
     });
   };
