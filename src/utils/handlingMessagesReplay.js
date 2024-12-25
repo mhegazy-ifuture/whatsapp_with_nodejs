@@ -1,8 +1,9 @@
 import { sendWhatsAppMessage } from "../services/whatsappService.js";
 import { sampleConfirmMenu, sampleMenu, sampleMultiSelectMenu, samplePaymentGateWay, sampletext } from "../shared/sampleModels.js";
-import { findItemById } from "./MenuItems.js";
+import { findItemById, getPrice } from "./MenuItems.js";
 
-export const handleTextMessage = async (from, session, next) => {
+export const handleTextMessage = async (messages, next) => {
+  const { from } = messages[0];
   await sendWhatsAppMessage(sampleMenu({ number: from })).catch((error) =>
     next(
       new Error(error?.response.data || "Failed to send message", {
@@ -12,8 +13,8 @@ export const handleTextMessage = async (from, session, next) => {
   );
 };
 
-export const handleInteractiveMessage = async (from, session, next) => {
-  const { button_reply, list_reply } = messages[0].interactive || {};
+export const handleInteractiveMessage = async (messages, session, next) => {
+      const { from, interactive: { button_reply, list_reply } = {} } = messages[0];
 
   if (button_reply) {
     await handleButtonReply(button_reply, from, session, next);

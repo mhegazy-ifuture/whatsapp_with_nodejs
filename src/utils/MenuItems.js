@@ -25,10 +25,10 @@ export const findItemById = (searchKey) => {
 
 export const getPrice = (item) => {
   const description = item.description;
-  const priceRegex = /\$\d+(\.\d+)?/; // matches a price in the format $X.XX
+  const priceRegex = /\d+(\.\d+)?\$/; // matches a price in the format $X.XX
   const match = description.match(priceRegex);
   if (match) {
-    return parseFloat(match[0].slice(1)); // remove the dollar sign and convert to float
+    return parseFloat(match[0].replace(/\$/g, ""), 10); // remove the dollar sign and convert to float with decimal point
   } else {
     return null; // no price found
   }
